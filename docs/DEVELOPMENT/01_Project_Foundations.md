@@ -88,5 +88,22 @@ This phase includes:
 
 ---
 
+### 1.5 `chore(frontend): configure TypeScript and Vite path aliases (@)`
 
+**What I did**
 
+- Upgraded `@types/node` to version `26.1.1` to support the required Node.js type definitions.
+
+- Defined the `@` path alias in `tsconfig.app.json` to simplify imports within the application.
+
+- Updated the import syntax in `main.tsx` to use the `@` alias instead of relative paths.
+
+**Why**
+
+- Configured path aliases to provide cleaner and more readable import statements.
+
+- Using the `@` alias makes imports easier to maintain as the project grows and the folder structure becomes more complex.
+
+- Keeping the alias configuration in TypeScript and Vite ensures that the `@` syntax is consistently recognized during development, type-checking, and builds.
+
+---
