@@ -68,3 +68,25 @@ This phase includes:
 
 ---
 
+### 1.4 `chore(frontend): configure Tailwind CSS v4 as a Vite plugin`
+
+**What I did**
+
+- Installed **`tailwindcss`** and **`@tailwindcss/vite`** as project dependencies.
+
+- Configured the Tailwind CSS Vite plugin in the application's **`vite.config.ts`** file.
+
+- Installed **`prettier-plugin-tailwindcss`** as a development dependency to automatically sort Tailwind CSS utility classes during formatting.
+
+**Why**
+
+- Chose **Tailwind CSS** as the primary styling solution because of its utility-first approach, flexibility, and seamless integration with modern React applications.
+
+- Configured Tailwind CSS as a Vite plugin to take advantage of the recommended Tailwind CSS v4 integration and simplify the project's styling setup.
+
+- Added **`prettier-plugin-tailwindcss`** to automatically maintain a consistent and predictable ordering of Tailwind CSS classes, improving code readability and maintainability.
+
+---
+
+
+
