@@ -45,3 +45,26 @@ This phase includes:
 - **`Prettier`** ensures consistent code formatting by enforcing standardized rules for aspects such as semicolons, indentation, spacing, and line breaks.
 
 - Separating linting and formatting responsibilities keeps the codebase consistent, readable, and easier to maintain.
+
+---
+
+### 1.3 `chore(frontend): configure TypeScript settings`
+
+**What I did**
+
+- Added **`"moduleResolution": "NodeNext"`** to **`tsconfig.node.json`** to align module resolution with the existing **`NodeNext`** module configuration.
+
+- Removed **`"erasableSyntaxOnly": true`** from **`tsconfig.node.json`**.
+
+- Enabled **`"strict": true`** in **`tsconfig.app.json`** to enforce stricter type-checking across the application.
+
+**Why**
+
+- Configured **`"moduleResolution": "NodeNext"`** to ensure TypeScript resolves modules consistently with the project's **`NodeNext`** module system.
+
+- Removed **`"erasableSyntaxOnly": true`** to avoid restricting the TypeScript syntax supported by the project.
+
+- Enabled **`"strict": true`** to improve type safety and catch potential type-related issues earlier during development.
+
+---
+
