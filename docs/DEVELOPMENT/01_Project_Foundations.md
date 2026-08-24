@@ -29,3 +29,19 @@ This phase includes:
 - Chose TypeScript to improve type safety, code maintainability, and developer experience as the application grows.
 
 ---
+
+### 1.2 `chore(frontend): configure ESLint and Prettier`
+
+**What I did**
+
+- Integrated **`eslint-config-prettier`** with the existing ESLint configuration to prevent conflicts between ESLint and Prettier rules.
+
+- Installed **`prettier`** as a development dependency and configured formatting rules for consistent code style.
+
+**Why**
+
+- **`ESLint`** helps identify potential code issues, invalid syntax, unused values, and other common problems early during development.
+
+- **`Prettier`** ensures consistent code formatting by enforcing standardized rules for aspects such as semicolons, indentation, spacing, and line breaks.
+
+- Separating linting and formatting responsibilities keeps the codebase consistent, readable, and easier to maintain.
