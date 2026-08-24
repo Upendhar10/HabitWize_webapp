@@ -107,3 +107,26 @@ This phase includes:
 - Keeping the alias configuration in TypeScript and Vite ensures that the `@` syntax is consistently recognized during development, type-checking, and builds.
 
 ---
+
+### 1.6 `chore(frontend): add environment variable validation`
+
+**What I did**
+
+- Created `.env` and `.env.sample` files to manage the environment variables required by the application.
+
+- Added an environment variable validation function at `@/config/env.config.ts` to validate the variables loaded from the `.env` file before they are used by the application.
+
+- Added checks to ensure required environment variables are present and have the expected types and values.
+
+**Why**
+
+- Environment variables are used to keep configuration and sensitive values such as API keys and database URLs outside the application source code, reducing the risk of accidentally exposing them in the codebase.
+
+- The `.env.sample` file documents the environment variables required by the project without containing their actual sensitive values, making it easier for other developers to configure their local environments.
+
+- Environment variables originate outside the application's type-safe code, so they should be validated before being consumed to prevent invalid or missing configuration from causing unexpected runtime issues.
+
+- Strict validation provides early feedback by checking the presence, type, and validity of required environment variables during application initialization.
+
+---
+
