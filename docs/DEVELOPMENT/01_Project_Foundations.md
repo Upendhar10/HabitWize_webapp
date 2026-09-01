@@ -130,3 +130,19 @@ This phase includes:
 
 ---
 
+## 2. Backend Project Foundations
+
+### 2.1 `chore(backend): initialize a node.js app using NPM`
+
+**What I did**
+
+- Initialized a Node.js project using `npm init`, which generates the `package.json` file.
+- Installed the required dependencies using `npm install`, which generates the `package-lock.json file`.
+
+**Why**
+
+- `package.json` serves as the configuration and metadata file for the backend project. It defines project information, scripts, dependencies, and other npm configuration.
+- `package-lock.json` locks the exact versions of the project's dependencies and their transitive dependencies, ensuring consistent installations across different environments.
+
+---
+
