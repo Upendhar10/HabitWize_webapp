@@ -176,3 +176,37 @@ This phase includes:
 - Used `tsc` for the production build because it is the TypeScript compiler responsible for type-checking and transpiling TypeScript into JavaScript.
 
 ---
+
+### 2.3 `chore(backend): configure ESLint and Prettier`
+
+**What I did**
+
+- Installed `eslint` and `prettier` as development dependencies using `npm i -D eslint prettier`.
+- Installed ESLint's JavaScript configuration package and Prettier compatibility configuration using `npm i -D @eslint/js eslint-config-prettier`.
+- Installed `typescript-eslint` to enable ESLint support for TypeScript code.
+- Encountered an upstream dependency compatibility issue between the current TypeScript version (`^7.0.2`) and the installed `typescript-eslint` version.
+- Downgraded TypeScript to `^5.9.2` to maintain compatibility with the selected ESLint and TypeScript tooling.
+- Created a `.prettierrc` file to configure formatting rules and a `.prettierignore` file to exclude specific files and directories from formatting.
+- Created an `eslint.config.mjs` file to configure ESLint rules and integrate `typescript-eslint` with the project.
+- Added the following scripts to `package.json`:
+  ```
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
+  ```
+  - `lint` — Runs ESLint on the entire project `(.)` to identify code-quality and potential coding issues.
+  - `lint:fix` — Runs ESLint and automatically fixes issues that ESLint can safely fix.
+  - `format` — Runs Prettier on the entire project and automatically formats the files according to the configured rules.
+  - `format:check` — Checks whether files are correctly formatted without modifying them. Useful for CI/CD pipelines.
+
+**Why**
+
+- **ESLint** is used to statically analyze the codebase, identify potential issues, and enforce consistent coding practices.
+- **Prettier** is used to automatically format the codebase and maintain a consistent coding style.
+- **`eslint-config-prettier`** disables ESLint rules that may conflict with Prettier, allowing both tools to work together without conflicting formatting rules.
+- **`@eslint/js`** provides ESLint's recommended JavaScript configuration, establishing a sensible baseline for linting.
+- **`typescript-eslint`** enables ESLint to understand and lint TypeScript-specific syntax and provides TypeScript-aware linting rules.
+- **Downgrading TypeScript** was necessary to resolve the dependency compatibility issue and ensure that the ESLint and TypeScript tooling works reliably together.
+
+---

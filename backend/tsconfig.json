@@ -19,7 +19,8 @@
     /* Interoperability */
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-
+    "resolveJsonModule": true,
+    
     /* Build */
     "sourceMap": true,
     "skipLibCheck": true,
