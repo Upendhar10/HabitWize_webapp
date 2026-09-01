@@ -146,3 +146,33 @@ This phase includes:
 
 ---
 
+### 2.2 `chore(backend): install and configure TypeScript`
+
+**What I did**
+
+- Installed `typescript`, `tsx`, and `@types/node` as development dependencies using `npm i -D typescript tsx @types/node`.
+
+- Added the following scripts to `package.json`:
+
+  ```json
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  }
+  ```
+
+  - `dev`: Runs the application directly from TypeScript source files and automatically restarts when files change.
+  - `build`: Compiles the TypeScript source code into JavaScript using the TypeScript compiler (`tsc`).
+  - `start`: Runs the compiled JavaScript application from the `dist` directory.
+
+- Created a `tsconfig.json` file and configured the TypeScript compiler according to the project's requirements.
+
+**Why**
+
+- Installed TypeScript as a development dependency because TypeScript is primarily needed during development and the build process; the production application runs the generated JavaScript.
+- Installed `tsx` to execute TypeScript files during development without requiring a separate compilation step and to provide watch mode for automatic restarts.
+- Installed `@types/node` to provide TypeScript type definitions for Node.js built-in APIs and globals.
+- Used `tsc` for the production build because it is the TypeScript compiler responsible for type-checking and transpiling TypeScript into JavaScript.
+
+---
