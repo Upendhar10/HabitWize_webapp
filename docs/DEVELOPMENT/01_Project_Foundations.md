@@ -210,3 +210,36 @@ This phase includes:
 - **Downgrading TypeScript** was necessary to resolve the dependency compatibility issue and ensure that the ESLint and TypeScript tooling works reliably together.
 
 ---
+
+### 2.4 `chore(backend): configure path aliases with tsc-alias`
+
+**What I did**
+
+- Installed `tsc-alias` as a development dependency using `npm i -D tsc-alias`.
+- Configured the `@/*` path alias in `tsconfig.json` to map to `./src/*`.
+- Removed the deprecated/unnecessary `baseUrl` configuration.
+- Updated the backend build command to run: `tsc && tsc-alias`
+
+**Why**
+
+- The backend already uses the `@/` alias to reference modules from the `src/` directory.
+- TypeScript `paths` allows the compiler to understand these aliases during development and compilation.
+- However, TypeScript does not rewrite those aliases in the emitted JavaScript.
+- `tsc-alias` rewrites the compiled imports so Node.js can resolve them correctly at runtime.
+- Running `tsc` followed by `tsc-alias` ensures the generated JavaScript contains runtime-resolvable import paths.
+
+---
+
+### 2.5 `chore (backend): add environment variables validation`
+
+**What I did**
+
+
+
+
+
+**Why**
+
+
+
+----

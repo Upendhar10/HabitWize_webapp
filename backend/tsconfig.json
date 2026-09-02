@@ -10,6 +10,12 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
+    /* Path Alias */ 
+    // "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     /* Strictness */
     "strict": true,
     "noUnusedLocals": true,
