@@ -28,5 +28,8 @@
     "tsx": "^4.23.13",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.69.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
   }
 }

@@ -230,16 +230,21 @@ This phase includes:
 
 ---
 
-### 2.5 `chore (backend): add environment variables validation`
+### 2.5 `chore(backend): add environment variables validation`
 
 **What I did**
 
-
-
-
+- Installed `dotenv` as a dependency using `npm i dotenv`.
+- Created a `.env` file to store environment-specific configuration and sensitive values.
+- Created a `.env.sample` file containing the required environment variable names without exposing actual values.
+- Created `@/config/env.config.ts` to load and validate environment variables before they are used by the application.
 
 **Why**
 
-
+- `dotenv` allows the application to load environment variables from the `.env` file.
+- Sensitive information such as credentials, database URLs, and client URLs should not be hardcoded in the source code or committed to the repository.
+- Environment variables come from outside the application, so they should be **validated at startup** to ensure required values exist and have the expected format.
+- `.env.sample` documents the environment variables required to run the backend while keeping their actual values private.
+- Centralizing validation in `env.config.ts` prevents invalid configuration from reaching the rest of the application.
 
 ----
