@@ -339,3 +339,42 @@ This phase includes:
 - Together, **Husky + lint-staged** provide an automated workflow that helps prevent code that violates the project's linting or formatting rules from entering the Git history.
 
 ---
+
+### 3.3 `chore(project): configure commitlint for standardized git commit messages`
+
+**What I did**
+
+- Installed **Commitlint CLI** as a development dependency using: `npm install -D @commitlint/cli`
+  - This provides the command-line interface required to validate Git commit messages.
+- Installed Commitlint's **conventional configuration** using: `npm install -D @commitlint/config-conventional`
+  - This provides a predefined set of rules based on the **Conventional Commits** specification, including supported commit types and the expected commit message structure.
+- Added a `commit-msg` Git hook at: `/.husky/commit-msg` with the following command:
+  ```
+  npx --no-install commitlint --edit "$1"
+  ```
+  - The hook passes the commit message to Commitlint for validation before the commit is finalized.
+- Tested the Commitlint workflow by attempting to create a commit with a message that violates the configured Conventional Commit rules and verified that the commit was rejected.
+
+**Why**
+
+This setup establishes an automated **commit-message quality gate** using **Commitlint** and **Husky**, ensuring that commit messages follow a consistent structure across the repository.
+- **Commitlint** is a tool used to **lint and validate Git commit messages** against a defined set of rules. In this project, it is configured to follow the Conventional Commits convention.
+- **`@commitlint/config-conventional`** provides a ready-made set of rules for Conventional Commits, defining the expected structure and commonly used commit types such as `feat`, `fix`, `chore`, `docs`, and `refactor`.
+- **Husky** integrates Commitlint into the Git workflow through the `commit-msg` hook. Whenever a commit is created, Husky invokes Commitlint to validate the proposed commit message.
+- Invalid commit messages are rejected, preventing inconsistent or incorrectly structured messages from becoming part of the repository's Git history.
+- This provides a workflow where:
+  ```text
+  git commit
+      ↓
+  Husky
+      ↓
+  commit-msg hook
+      ↓
+  Commitlint
+      ↓
+  Validate Conventional Commit structure
+      ↓
+  Valid → Commit created
+  Invalid → Commit rejected
+  ```
+---
