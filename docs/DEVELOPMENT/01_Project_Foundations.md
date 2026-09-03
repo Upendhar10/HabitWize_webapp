@@ -290,3 +290,52 @@ This phase includes:
 - Standardize the project's Git history and commit conventions without coupling the root workspace to either application.
 
 ---
+
+### 3.2 `chore(project): configure git hooks with husky and lint-staged`
+
+**What I did**
+
+- Initialized **Husky** at the repository root using `npx husky init`.
+- This setup:
+  - Installs `husky` as a development dependency.
+  - Creates the root-level `.husky/` directory.
+  - Creates the `.husky/pre-commit` hook.
+  - Adds or updates the `"prepare": "husky"` script in the root `package.json` to ensure Husky is initialized when dependencies are installed.
+- Installed **`lint-staged`** as a development dependency using: `npm install -D lint-staged`
+- Configured the root-level `.husky/pre-commit` hook to execute: `npx lint-staged`
+  - This ensures that linting and formatting checks are executed on staged files before a commit is created.
+- Since the `frontend` and `backend` workspaces have **separate ESLint and Prettier configurations**, configured `lint-staged` to run the appropriate workspace-specific tooling for each staged file.
+- Added a custom workspace command runner at: `/scripts/run-workspace-command.mjs`
+  - This script determines the appropriate workspace for a staged file and executes the required command using that workspace's ESLint and Prettier configuration.
+- Added the corresponding `lint-staged` configuration at: `/lint-staged.mjs`
+  - This configuration delegates staged-file processing to the custom workspace command runner.
+  - As a result, the pre-commit workflow is now:
+    ```text
+    git commit
+        ↓
+    Husky
+        ↓
+    .husky/pre-commit
+        ↓
+    lint-staged
+        ↓
+    Workspace-specific ESLint / Prettier
+        ↓
+    Commit proceeds only if the checks succeed
+    ```
+
+- Tested the `lint-staged` workflow with different file naming patterns, including: `git test.ts` and `git-test.ts`and verified that the staged files were correctly detected and processed as expected.
+
+**Why**
+
+- This setup establishes an automated **pre-commit quality gate** for the repository using **Husky** and **lint-staged**.
+
+  - **Husky** is used to manage and execute **Git hooks**. In this setup, Husky triggers the `pre-commit` hook whenever a commit is attempted, allowing us to run validation before the commit is created.
+
+  - **lint-staged** is used to run configured **linting and formatting commands only against files that are staged for commit**. This avoids unnecessarily processing the entire codebase and makes the pre-commit workflow faster and more focused.
+
+- Because the `frontend` and `backend` workspaces have their own **ESLint and Prettier configurations**, the custom workspace command runner ensures that each staged file is validated using the appropriate workspace-specific configuration.
+
+- Together, **Husky + lint-staged** provide an automated workflow that helps prevent code that violates the project's linting or formatting rules from entering the Git history.
+
+---

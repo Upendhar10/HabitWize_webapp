@@ -11,5 +11,11 @@
     "backend"
   ],
   "author": "Upendhar NM",
-  "license": "ISC"
+  "license": "ISC",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "lint-staged": "^16.4.0"
+  }
 }
