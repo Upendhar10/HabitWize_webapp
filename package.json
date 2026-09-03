@@ -1,0 +1,15 @@
+{
+  "name": "habitwize",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Repository Workspace for Habitwize",
+  "directories": {
+    "doc": "docs"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "author": "Upendhar NM",
+  "license": "ISC"
+}

@@ -248,3 +248,45 @@ This phase includes:
 - Centralizing validation in `env.config.ts` prevents invalid configuration from reaching the rest of the application.
 
 ----
+
+## 3. Project Workspace Foundations
+
+### 3.1 `chore(project): set up root workspace for git tooling and standardized history`
+
+**What I did**
+
+- Initialized a Node.js project at the repository root using `npm init -y`.
+- Updated the generated `package.json` to serve as the **repository workspace** rather than as a standalone Node.js application.
+- Configured the root workspace with the following:
+  - Set `"private": true` to prevent the root workspace from being accidentally published to npm.
+  - Defined `frontend` and `backend` as npm workspaces.
+  - Updated the project name, version, and description to represent the repository as a whole.
+  - Added the `docs` directory as the repository's documentation directory.
+
+  ```json
+  {
+    "name": "habitwize",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Repository Workspace for Habitwize",
+    "directories": {
+      "doc": "docs"
+    },
+    "workspaces": [
+      "frontend",
+      "backend"
+    ],
+    "author": "Upendhar NM",
+    "license": "ISC"
+  }
+  ```
+
+**Why**
+
+- Establish a **root-level Node.js workspace** for managing repository-wide tooling and configuration.
+- Enable npm workspaces to manage the `frontend` and `backend` projects from a single root.
+- Provide a centralized location for installing and managing **Git-related development tools**.
+- Keep Git tooling and configuration consistent across the entire repository.
+- Standardize the project's Git history and commit conventions without coupling the root workspace to either application.
+
+---
