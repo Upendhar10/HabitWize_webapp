@@ -14,7 +14,7 @@ This phase includes:
  
 ## 1. Backend App Foundations
 
-### 1.1 `chore(backend): configure express application foundation`
+### 1.1 `chore(backend): configure and verify express server workflow`
 
 **What I did**
 
@@ -32,5 +32,25 @@ This phase includes:
 - Adds **CORS (Cross-Origin Resource Sharing)** support, allowing the backend to handle requests from a frontend or other origins when required.
 - Adds **TypeScript type definitions** for Express and CORS to provide type safety, better IDE support, and compile-time validation when working with JavaScript libraries that do not include their own TypeScript types.
 * Separating the Express application (`app.ts`) from the server entry point (`index.ts`) keeps application configuration independent from server startup logic, making the codebase easier to test, maintain, and extend.
+
+---
+
+## 1.2 `feat(backend): establish database connection with express app using mongoose`
+
+**What I did**
+
+- Installed **Mongoose** as a production dependency using: `npm i mongoose`
+- Updated `@/config/env.config.ts` to include the `MONGO_URI` environment variable along with the necessary validation.
+- Implemented the initial database connection logic to connect the backend application to a **MongoDB Atlas** database.
+- Added a `startServer` function responsible for initializing the application startup sequence.
+- Configured the server to start listening for incoming requests **only after a successful database connection**.
+- This ensures the backend does not accept requests when the required database connection has not been established.
+
+**Why**
+
+- Establishes the database layer required for persisting and retrieving application data.
+- **Mongoose** is an ODM (**Object Data Modeling**) library for MongoDB and Node.js. It provides a structured API for connecting to MongoDB and interacting with collections and documents through models, schemas, queries, and built-in validation mechanisms.
+- Keeping `MONGO_URI` in the environment configuration prevents database credentials and connection details from being hardcoded into the application source code.
+- Starting the Express server only after successfully connecting to MongoDB ensures the application is ready to perform database-dependent operations before it begins handling requests.
 
 ---
