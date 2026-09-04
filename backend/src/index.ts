@@ -1,12 +1,15 @@
 import "dotenv/config";
 import { env } from "@/config/env.config.js";
 
-import app from "@/app"
+import app from "@/app";
 
-const project: string = "Habitwize";
+const PORT = env.port;
 
-console.log(env);
+// Define a route for the root URL
+app.get("/", (_req, res) => {
+  res.send("Hello World!");
+});
 
-console.log(app)
-
-console.log(project);
+app.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`);
+});
