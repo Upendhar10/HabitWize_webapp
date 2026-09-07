@@ -54,3 +54,33 @@ This phase includes:
 - Starting the Express server only after successfully connecting to MongoDB ensures the application is ready to perform database-dependent operations before it begins handling requests.
 
 ---
+
+### 1.3 `feat(backend): introduce centralized application error handling`
+
+**What I did**
+
+- **Introduced an application-level error abstraction** in `@/errors/application.errors.ts` to standardize predictable, operational errors across the backend. This new `ApplicationError` class extends JavaScript's native `Error` and adds structured metadata:
+  * `statusCode` — HTTP status associated with the error.
+  * `errorCode` — application-specific error identifier.
+  * `message` — human-readable error description.
+  * `isOperational` — distinguishes expected application errors from unexpected programming/system failures.
+- **Implemented a global Express error-handling middleware** using TypeScript's `ErrorRequestHandler` type. This middleware provides a single entry point for backend errors:
+  * Known `ApplicationError` instances are converted into a consistent API response.
+  * Unexpected errors are logged on the server and returned as a generic `500 Internal Server Error`.
+  * Internal error details are not exposed to clients, reducing accidental leakage of implementation details.
+- **Added a reusable `NotFoundError` application error** for resource lookup failures This creates a semantic error type for cases such as a missing user, post, order, or other resource while keeping the HTTP status and application error code consistent.
+
+**Why**
+
+Instead of inconsistently handling errors across individual routes, controllers, or services. This configuration establishes a centralized error-handling strategy for the backend. 
+
+The main goals were to:
+- **Standardize API error responses** so clients receive a predictable structure.
+- **Separate expected application errors from unexpected failures** through `ApplicationError` and `isOperational`.
+- **Centralize error handling** instead of duplicating `try/catch` response logic throughout the application.
+- **Provide meaningful HTTP status codes and application error codes** for known failures.
+- **Prevent sensitive internal error information from reaching clients** when an unexpected exception occurs.
+- **Make the error system extensible**, allowing additional domain-specific errors to inherit from `ApplicationError`.
+- **Improve maintainability and debugging** by preserving stack traces while keeping client-facing errors clean.
+
+---
