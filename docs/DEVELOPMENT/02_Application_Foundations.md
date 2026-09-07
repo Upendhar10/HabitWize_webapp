@@ -35,7 +35,7 @@ This phase includes:
 
 ---
 
-## 1.2 `feat(backend): establish database connection with express app using mongoose`
+### 1.2 `feat(backend): establish database connection with express app using mongoose`
 
 **What I did**
 
@@ -82,5 +82,36 @@ The main goals were to:
 - **Prevent sensitive internal error information from reaching clients** when an unexpected exception occurs.
 - **Make the error system extensible**, allowing additional domain-specific errors to inherit from `ApplicationError`.
 - **Improve maintainability and debugging** by preserving stack traces while keeping client-facing errors clean.
+
+---
+
+### 1.4 `feat(backend): introduce centralized logging system`
+
+**What I did**
+
+- **Installed Pino** as the application's structured logging library via `npm i pino`
+- Pino provides a fast, structured logger suitable for production Node.js applications.
+- **Installed Pino Pretty as a development dependency** to make logs easier to read during local development using `npm i -D pino-pretty`
+- **Created and configured a centralized logger** using Pino at `@/config/logger.config.ts`, This logger behaves differently depending on the environment:
+
+    **Development**
+
+    * Uses `pino-pretty` for human-readable terminal output.
+    * Enables colored logs.
+    * Formats timestamps as `HH:MM:ss`.
+    * Hides `pid` and `hostname` to keep local logs concise.
+
+    **Production**
+
+    * Uses Pino's default structured JSON output.
+    * Does not load `pino-pretty`, keeping production logging machine-readable and suitable for log aggregation and monitoring systems.
+- **Replaced existing `console`-based logging** in `@/index.ts` with the centralized Pino logger.
+
+**Why**
+
+- Pino establishes a **single logging mechanism across the backend** instead of relying on scattered `console.log` statements.
+- This centralized logger makes logging more consistent and gives the application a foundation for structured observability. 
+- Each log entry can carry a log level, message, and additional metadata, which becomes especially useful when debugging requests or integrating with production log-management and monitoring platforms.
+- Using different transports for development and production also keeps the developer experience convenient without sacrificing machine-readable logs in production.
 
 ---
