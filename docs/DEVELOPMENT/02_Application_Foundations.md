@@ -115,3 +115,30 @@ The main goals were to:
 - Using different transports for development and production also keeps the developer experience convenient without sacrificing machine-readable logs in production.
 
 ---
+
+### 1.5 `chore(backend): establish security baseline using helmet & rate-limiting`
+
+**What I did**
+
+- **Installed Helmet** as a backend security dependency using `npm i helmet`
+- Helmet helps secure Express applications by setting a collection of HTTP response headers that reduce exposure to common browser-based attacks and unsafe defaults.
+- **Installed `express-rate-limit`** to introduce request-rate limiting using `npm i express-rate-limit`
+- This provides a configurable middleware for limiting the number of requests a client can make within a defined time window.
+- **Configured a centralized rate limiter** according to the project's initial API requirements:
+- The current configuration provides:
+  * **15-minute request window**
+  * **100 requests per IP per window**
+  * **Standard `RateLimit` response headers**
+  * **Legacy `X-RateLimit-*` headers disabled**
+  * **IPv6 subnet handling** configured to `/56`
+- **Added the security middleware to the Express application** at `@/app.ts`, allowing the security controls to be applied centrally rather than individually across routes. This establishes the security baseline at the application level.
+
+**Why**
+
+The idea is to establish the first layer of **defense-in-depth** for the backend.
+- Express applications are exposed to the public internet, so relying only on application-level validation is not enough. Helmet and rate limiting address two important baseline concerns:
+- **Helmet** helps harden the application's HTTP responses by applying security-related headers and reducing exposure to several common web vulnerabilities and browser misconfigurations.
+- **Rate limiting** helps control excessive request volume from individual clients. It can reduce the impact of accidental request floods, abusive clients, simple denial-of-service attempts, and brute-force-style traffic.
+- Centralizing both mechanisms also makes the security configuration easier to maintain and adjust as the application grows.
+
+---
