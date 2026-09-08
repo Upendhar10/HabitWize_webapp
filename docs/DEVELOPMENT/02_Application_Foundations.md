@@ -142,3 +142,26 @@ The idea is to establish the first layer of **defense-in-depth** for the backend
 - Centralizing both mechanisms also makes the security configuration easier to maintain and adjust as the application grows.
 
 ---
+
+### 1.6 `chore(backend): establish api route architecture`
+
+**What I did**
+
+* Attached the centralized router to **`@/app.js`** with API versioning under **`/api/v1`**, establishing a consistent structure and allowing future versions such as **`/api/v2`** without disrupting existing clients.
+* Created a centralized router at **`@/routes/index.ts`** to serve as the main entry point for API routes.
+  - Keeps route definitions separate from application configuration.
+  - Allows routes to be organized by feature or module as the API grows.
+* Added fallback middleware for undefined routes, forwarding unmatched requests as `NotFoundError` to the centralized error handler for consistent error handling.
+* Added a temporary health-check endpoint:
+  ```text
+  GET /api/v1/healthcheck
+  ```
+  returning the API **status**, response **timestamp**, and process **uptime**. This can later be extended to include dependency checks.
+
+**Why**
+
+* Establishes the foundation for a scalable and maintainable API architecture before feature-specific routes are introduced.
+* Separates server configuration from route definitions, keeping **`@/app.js`** focused on application setup and making individual modules easier to develop, test, and extend.
+* Introduces API versioning and a predictable routing structure from the start.
+
+---
