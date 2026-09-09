@@ -165,3 +165,40 @@ The idea is to establish the first layer of **defense-in-depth** for the backend
 * Introduces API versioning and a predictable routing structure from the start.
 
 ---
+
+### 1.7 `chore(backend): define API response contract`
+
+**What I did**
+
+* Defined the successful API response contract**
+  - Added a generic `ApiSuccessResponse<T>` interface under `@/utils/types`.
+  - Standardized successful API responses with the following structure:
+    ```ts
+    export interface ApiSuccessResponse<T> {
+      success: true;
+      message: string;
+      data: T;
+    }
+    ```
+  - Used an `interface` because the response contract represents a named object shape.
+  - Made the response generic with `T` so `data` can represent any payload type while preserving type safety.
+  - Used `T` instead of `{}` because `{}` is too broad and does not describe the actual structure of the response data, whereas TypeScript automatically infers `T` from the `data` argument, so callers do not need to explicitly specify the generic type.
+* Implemented a reusable success response helper
+  - Added `sendSuccessResponse<T>()` to centralize the creation and sending of successful HTTP responses.
+  - The helper accepts:
+      * `data` — the response payload.
+      * `message` — an optional custom success message, defaulting to `"Success"`.
+      * `statusCode` — the HTTP status code, defaulting to `200`.
+  - Typed the constructed response as `ApiSuccessResponse<T>` at `@/utils/types` to ensure that the implementation conforms to the defined API contract.
+  - Established a consistent response structure containing `success`, `message`, and `data` across successful endpoints.
+  - Used a type-only import for Express's `Response` because it is required only at compile time.
+
+**Why**
+
+- Establishes a **consistent and predictable contract** for all successful API responses.
+- Keeps response payloads **type-safe** by preserving the actual type of `data` through the generic `T`.
+- Allows the same response contract to support different payloads, such as a single object, an array, or other valid data types.
+- Centralizes response formatting in `sendSuccessResponse<T>()`, preventing controllers from manually constructing responses and introducing inconsistencies.
+- Separates the **API response contract** from the application's error-handling mechanism, allowing successful responses and application errors to be handled independently.
+
+---
