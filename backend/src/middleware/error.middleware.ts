@@ -1,3 +1,5 @@
+// Turns the error into the HTTP response
+
 import type { ErrorRequestHandler } from "express";
 
 import { ApplicationError } from "@/errors/application.errors.js";
@@ -9,6 +11,7 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
       error: {
         code: error.errorCode,
         message: error.message,
+        details: error.details,
       },
     });
   }

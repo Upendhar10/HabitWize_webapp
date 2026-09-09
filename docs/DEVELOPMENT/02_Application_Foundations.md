@@ -202,3 +202,53 @@ The idea is to establish the first layer of **defense-in-depth** for the backend
 - Separates the **API response contract** from the application's error-handling mechanism, allowing successful responses and application errors to be handled independently.
 
 ---
+
+### 1.8 `feat(backend): add request validation with zod`
+
+**What I did**
+
+* Added reusable request-validation middleware
+  - Introduced a validation middleware to validate incoming HTTP request bodies against Zod schemas at `@/middleware/validation.middleware.ts`
+  - Used Zod's `safeParse()` API to validate input without relying on exceptions for expected validation failures.
+  - Allowed each route to provide its own schema while keeping the validation mechanism centralized and reusable.
+  - Replaced `req.body` with Zod's parsed result after successful validation so that any supported transformations or coercions are propagated to the controller.
+
+* Integrated Zod with the application's error hierarchy
+  - Converted Zod validation failures into the existing `ValidationError`, keeping validation errors consistent with the application's `ApplicationError` architecture.
+  - Passed `result.error.issues` to `ValidationError` so that structured field-level validation information is preserved.
+  - Extended `ApplicationError` with an optional `details` property to carry additional error information through the application error hierarchy.
+  - Updated `ValidationError` to forward validation details to `ApplicationError`.
+
+* Integrated validation errors with the centralized error handler
+  - Kept HTTP error-response formatting centralized in `errorHandler` at `@/middleware/error.middleware.ts`
+  - Standardized validation failures to the existing API error structure:
+    ```ts
+    {
+      success: false,
+      error: {
+        code: "VALIDATION_ERROR",
+        message: "Request validation failed",
+        details: [...]
+      }
+    }
+    ```
+  - Preserved the existing fallback handling for unexpected errors using `INTERNAL_SERVER_ERROR`.
+  - Ensured Zod-specific errors do not leak beyond the validation layer and are instead represented through the application's own error types.
+
+* Established a clear boundary between request and business validation
+  - Established Zod as the mechanism for validating incoming HTTP request data against predefined schemas.
+  - Reserved business and domain rules within the controller/service/application layer rather than coupling them to request-schema validation.
+  - Reserved specialized `ApplicationError` subclasses for application-level failures such as conflicts, authorization failures, missing resources, and other business-rule violations.
+
+**Why**
+
+* **Centralizes request validation:** A reusable Zod middleware allows routes to define their own validation schemas without duplicating validation logic.
+* **Provides runtime validation:** TypeScript types are removed at runtime, whereas Zod actively validates data received from external sources such as HTTP requests.
+* **Preserves structured validation details:** Zod provides detailed validation issues, which are carried through `ApplicationError.details` and can be returned to clients in a consistent format.
+* **Maintains separation of concerns:** Zod is responsible for request-schema validation, `ValidationError` represents the failure within the application, and `errorHandler` translates application errors into HTTP responses.
+* **Keeps the application independent of Zod-specific errors:** Converting `ZodError` into `ValidationError` prevents the rest of the application from depending directly on Zod's error model.
+* **Preserves parsed and transformed data:** Assigning `result.data` back to `req.body` ensures controllers work with Zod's validated and transformed output rather than the original unvalidated input.
+* **Separates schema validation from business rules:** Conditions such as resource uniqueness, authorization, or database state remain the responsibility of the appropriate application/service layer.
+* **Provides a foundation for future request validation:** Although the middleware currently validates `req.body`, the same approach can later be extended to `req.params`, `req.query`, headers, and other request components.
+
+---

@@ -9,20 +9,22 @@
   └── isOperational
 */
 
-import { ErrorCode } from "@/utils/types";
+import { ErrorCode } from "@/utils/types.js";
 
 export class ApplicationError extends Error {
   public readonly statusCode: number;
   public readonly errorCode: ErrorCode;
   public readonly isOperational: boolean;
+  public readonly details?: unknown;
 
-  constructor(statusCode: number, errorCode: ErrorCode, message: string) {
+  constructor(statusCode: number, errorCode: ErrorCode, message: string, details?: unknown) {
     super(message);
     this.name = this.constructor.name;
 
     this.statusCode = statusCode;
     this.errorCode = errorCode;
     this.isOperational = true;
+    this.details = details;
 
     // Ensures instanceof works correctly across runtimes/transpilation targets.
     Object.setPrototypeOf(this, new.target.prototype);
