@@ -11,6 +11,29 @@ This phase includes:
 - Establishing Git and development tooling.
 - Setting up the initial frontend and backend foundations.
 
+```
+HabitWize/
+│
+├── package.json          ← repository/workspace tooling
+│   ├── Husky
+│   ├── Commitlint
+│   └── lint-staged
+│
+├── frontend/
+│   └── package.json      ← frontend dependencies/tooling
+│       ├── React
+│       ├── Vite
+│       ├── Tailwind
+│       └── frontend ESLint/TypeScript
+│
+└── backend/
+    └── package.json      ← backend dependencies/tooling
+        ├── Express
+        ├── Mongoose
+        └── backend TypeScript/ESLint
+
+```
+
 ---
 
 ## 1. Frontend Project Foundations
