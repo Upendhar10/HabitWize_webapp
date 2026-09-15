@@ -252,3 +252,75 @@ The idea is to establish the first layer of **defense-in-depth** for the backend
 * **Provides a foundation for future request validation:** Although the middleware currently validates `req.body`, the same approach can later be extended to `req.params`, `req.query`, headers, and other request components.
 
 ---
+
+--------
+--------
+
+## 2. Frontend App Foundations
+
+### 2.1 `chore(frontend): establish frontend application structure`
+
+**What I did**
+
+- Created a clean and predictable `src` structure with a clear responsibility for each directory.
+- Established the initial application structure for:
+  - Application-level infrastructure
+  - Feature modules
+  - Shared UI components
+  - Layouts
+  - API and service communication
+  - Redux state management
+  - Global styling
+  - Shared types
+  - Utilities
+  - Application configuration
+
+  ```text
+  src/
+  │
+  ├── app/                           # Application-wide infrastructure
+  │   ├── router/                    # Application routing
+  │   └── store/                     # Redux store configuration
+  │
+  ├── features/                      # Business/application features
+  │   ├── auth/
+  │   ├── habits/
+  │   │   ├── components/            # Feature-specific UI
+  │   │   ├── pages/                 # Feature-specific pages
+  │   │   ├── services/              # Feature-specific API/application services
+  │   │   ├── hooks/                 # Feature-specific hooks
+  │   │   ├── habits.slice.ts        # Feature-specific Redux state
+  │   │   └── habits.types.ts        # Feature-specific types
+  │   │
+  │   └── ...
+  │
+  ├── components/                    # Shared reusable UI
+  │
+  ├── layouts/                       # Application/page structural layouts
+  │
+  ├── services/                      # Shared infrastructure services
+  │
+  ├── styles/                        # Global styling foundation
+  │   └── global.css
+  │
+  ├── types/                         # Shared types
+  │
+  ├── utils/                         # Generic utilities
+  │
+  ├── config/                        # Application configuration
+  │
+  ├── App.tsx                        # Root React application
+  └── main.tsx                       # Application entry point
+  ```
+- Moved global css configuration to `src/styles/global.css` for better application structure.
+- Added path alias configuration to `tsconfig.json` as well.
+
+**Why**
+
+- Establish a predictable structure for upcoming application and infrastructure concerns.
+- Define clear boundaries between different responsibilities.
+- Keep application-level infrastructure separate from business features.
+- Separate reusable UI, layouts, routing, API communication, state management, styling, and shared utilities.
+- Provide a scalable foundation for implementing future features without prematurely introducing feature-specific code.
+
+---
