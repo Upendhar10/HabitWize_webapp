@@ -18,9 +18,8 @@ app.use(
   }),
 );
 
+// Request Parsing middlewares with Rate Limiting
 app.use(limiter);
-
-// Request Parsing middlewares (Global)
 app.use(
   express.json({
     limit: "10kb",
