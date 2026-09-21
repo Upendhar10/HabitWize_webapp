@@ -324,3 +324,85 @@ The idea is to establish the first layer of **defense-in-depth** for the backend
 - Provide a scalable foundation for implementing future features without prematurely introducing feature-specific code.
 
 ---
+
+### 2.2 `chore(frontend): establish application-level routing using React Router`
+
+**What I did**
+
+- Installed **React Router v8** as the application's routing library.
+- Chose **Data Mode** instead of Declarative Mode to keep route configuration separate from React rendering.
+- Data Mode extends basic client-side routing with route-level capabilities such as **data loading, mutations, pending states, revalidation, and error handling** through APIs such as `loader`, `action`, and `useFetcher`. ([React Router][5])
+- Created a single `createBrowserRouter` instance at `@/app/router/index.ts`.
+- Created a centralized route configuration at `@/app/router/routes.ts`.
+- Organized the application routes as a **nested route tree** instead of defining routes independently. This establishes a clear hierarchy between the application shell, layouts, route guards, and individual pages.
+- Divided routes into three access areas:
+
+  * **Public routes** — accessible to everyone.
+  * **Guest-only routes** — accessible only when the user is not authenticated.
+  * **Authenticated routes** — accessible only after authentication.
+- Created an application root route that acts as the top-level routing boundary and contains all child routes.
+- Created separate layouts under `@/layouts/`:
+  * `PublicLayout` — shared structure for public pages.
+  * `AuthLayout` — shared structure for authentication pages.
+  * `PrivateLayout` — shared structure for authenticated pages.
+- Used React Router's `Outlet` in each layout to render the matched child route inside the layout.
+- `Outlet` provides the rendering point for the currently matched child route, allowing multiple pages to share the same layout without duplicating the layout structure. 
+- Created route guards under `@/app/router/guards/`:
+  * `RequireAuth` — prevents unauthenticated users from accessing private routes.
+  * `RequireGuest` — prevents authenticated users from accessing guest-only routes.
+
+- `RequireAuth` redirects unauthenticated users to `/signin` and preserves the original location so that the application can later return them to the page they originally requested.
+
+- `RequireGuest` redirects authenticated users away from authentication pages and toward the private application.
+
+- Added a catch-all route for unmatched URLs to provide a **404 / Page Not Found** experience.
+
+- Established the foundation for route-level error handling so that routing-related and future loader/action errors can be handled independently from normal page rendering.
+
+---
+
+**Why**
+
+- The purpose of this change is to establish a **clear routing architecture before implementing application features**.
+
+- React Router is responsible for determining **which part of the application should be rendered for the current URL**. By defining the routing structure separately from the UI components, the application gets a centralized and predictable navigation model.
+
+- Using **Data Mode** also gives the application a foundation for future route-level data operations. As features are added, routes can own their associated data loading, mutations, pending states, revalidation, and error handling instead of forcing all of that logic into individual components. 
+
+- The nested route structure establishes the following hierarchy:
+
+  ```text
+  Application
+  │
+  ├── Public Routes
+  │   └── PublicLayout
+  │       └── Public Pages
+  │
+  ├── Guest-only Routes
+  │   └── RequireGuest
+  │       └── AuthLayout
+  │           └── Authentication Pages
+  │
+  └── Authenticated Routes
+      └── RequireAuth
+          └── PrivateLayout
+              └── Private Pages
+  ```
+
+- This separation makes the responsibilities explicit:
+
+  ```text
+  Router
+    ↓
+  Access Control
+    ↓
+  Layout
+    ↓
+  Page
+  ```
+
+- The layout hierarchy also prevents repeated UI structures. For example, the public navbar and footer can be defined once in `PublicLayout` and shared by every public page through `Outlet`.
+
+- Similarly, authentication and private sections can evolve independently without coupling their UI structure to the individual pages.
+
+---
