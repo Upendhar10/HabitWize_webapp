@@ -406,3 +406,38 @@ The idea is to establish the first layer of **defense-in-depth** for the backend
 - Similarly, authentication and private sections can evolve independently without coupling their UI structure to the individual pages.
 
 ---
+
+### 2.3 `chore(frontend): establish application-level state management using RTK`
+
+**What I did**
+
+- Installed **Redux Toolkit** and **React Redux**: `npm install @reduxjs/toolkit react-redux`
+- Established the HTTP transport configuration in `app/api/baseQuery.ts`.
+- Created a **central RTK Query API slice** to act as the application's shared API/data-fetching infrastructure at `app/api/api.ts`
+- This provides a single extension point for defining API endpoints, caching behavior, invalidation, and server-state management as the application grows.
+- Configured the **Redux store** and registered the RTK Query reducer and middleware.
+- Added **typed Redux hooks** to provide type-safe interaction with the store.
+- Established the initial **RTK architecture**:
+
+```text
+RTK Foundation
+│
+├── Client/Application State
+│   ├── store.ts       → creates/configures Redux store
+│   └── hooks.ts       → typed access to Redux
+│
+└── Server State
+    ├── api.ts         → central RTK Query API/cache
+    └── baseQuery.ts   → how requests are made/configured
+```
+- RTK Query manages server state; Redux slices manage client/application state. `store.ts` brings both into one Redux store. `hooks.ts` gives the React application typed access to that store.
+
+**Why**
+
+* Introduces a **centralized state-management foundation** instead of allowing state and API concerns to become scattered across individual components.
+* Establishes **RTK Query as the server-state layer** responsible for API communication, caching, subscriptions, and request lifecycle management.
+* Provides a consistent and **type-safe Redux interface** through `RootState`, `AppDispatch`, `useAppSelector`, and `useAppDispatch`.
+* Keeps the API infrastructure centralized, making it easier to add feature-specific endpoints without creating separate API clients or duplicated request logic.
+* Creates a scalable foundation for upcoming features such as **authentication, cached API data, cache invalidation, loading/error states, and feature-level state**.
+
+---
