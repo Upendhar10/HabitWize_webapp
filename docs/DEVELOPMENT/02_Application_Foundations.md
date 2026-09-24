@@ -419,17 +419,17 @@ The idea is to establish the first layer of **defense-in-depth** for the backend
 - Added **typed Redux hooks** to provide type-safe interaction with the store.
 - Established the initial **RTK architecture**:
 
-```text
-RTK Foundation
-│
-├── Client/Application State
-│   ├── store.ts       → creates/configures Redux store
-│   └── hooks.ts       → typed access to Redux
-│
-└── Server State
-    ├── api.ts         → central RTK Query API/cache
-    └── baseQuery.ts   → how requests are made/configured
-```
+  ```text
+  RTK Foundation
+  │
+  ├── Client/Application State
+  │   ├── store.ts       → creates/configures Redux store
+  │   └── hooks.ts       → typed access to Redux
+  │
+  └── Server State
+      ├── api.ts         → central RTK Query API/cache
+      └── baseQuery.ts   → how requests are made/configured
+  ```
 - RTK Query manages server state; Redux slices manage client/application state. `store.ts` brings both into one Redux store. `hooks.ts` gives the React application typed access to that store.
 
 **Why**
@@ -439,5 +439,23 @@ RTK Foundation
 * Provides a consistent and **type-safe Redux interface** through `RootState`, `AppDispatch`, `useAppSelector`, and `useAppDispatch`.
 * Keeps the API infrastructure centralized, making it easier to add feature-specific endpoints without creating separate API clients or duplicated request logic.
 * Creates a scalable foundation for upcoming features such as **authentication, cached API data, cache invalidation, loading/error states, and feature-level state**.
+
+---
+
+### 2.4 `chore(frontend): define application level styling`
+
+**What I did**
+
+* Added centralized global CSS for the application at `@/styles/globals.css`.
+* Defined Tailwind theme tokens, typography, colors, surfaces, and light/dark themes.
+* Added global base styles and ambient background.
+* Added reusable UI primitives, animations, progress ring, and scrollbar styles.
+
+**Why**
+
+* Establish a consistent application-wide styling foundation.
+* Centralize design tokens and shared UI styles.
+* Keep feature-level styling within Tailwind CSS.
+* Provide a consistent design system that can be extended as the application grows.
 
 ---
